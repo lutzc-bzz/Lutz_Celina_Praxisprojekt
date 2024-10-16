@@ -50,6 +50,19 @@ class TestTodoAPI(unittest.TestCase):
         # Prüfe ob in der response message gleich 'Book added' ist
         assert json.loads(response.data)['message'] == 'Book added'
 
+    def test_user_add_book(self):
+        # Logge den Benutzer mit den Daten {username: 'user1', password: 'pass1'}
+        self.login('user1', 'pass1')
+        # Füge ein neues Buch hinzu und speichere die Antwort in response
+        response = self.client.post(
+            '/books',
+            json={'title': 'Test Book', 'author': 'Test Author', 'release_date': '11.11.2020', 'average_rating': 1}
+        )
+        # Prüfe ob der Statuscode gleich 403 ist
+        assert response.status_code == 403
+        # Prüfe ob in der response message gleich 'User does not have corresponding access' ist
+        assert json.loads(response.data)['message'] == 'User does not have corresponding access'
+
     def test_admin_update_book(self):
         # Logge den Benutzer mit den Daten {username: 'user2', password: 'pass2'}
         self.login('user2', 'pass2')
@@ -74,6 +87,30 @@ class TestTodoAPI(unittest.TestCase):
         # Überprüfe ob die message aus response gleich 'Book updated' ist
         assert json.loads(response.data)['message'] == 'Book updated'
 
+    def test_user_update_book(self):
+        # Logge den Benutzer mit den Daten {username: 'user1', password: 'pass1'}
+        self.login('user1', 'pass1')
+        # Hole alle Bücher und speicher die Antwort in response
+        response = self.client.get('/books')
+        # Prüfe ob der Statuscode gleich 200 ist
+        assert response.status_code == 200
+        # Speichere die Daten aus response in books
+        books = json.loads(response.data)
+        # Überprüfe, ob die Book-Liste nicht leer ist
+        assert len(books) > 0
+        # Speichere das erste Buch aus der Liste books in first_book_id
+        first_book_id = books[0]['book_id']
+        # Aktualisiere das erste Buch der books-Liste mit neuen Daten und speichere die Antwort in response
+        response = self.client.put(
+            f'/books/{first_book_id}',
+            json={'title': 'Updated Test Book', 'author': 'Updated Test Author', 'release_date': '22.11.2020',
+                  'average_rating': 5},
+        )
+        # Prüfe ob der Statuscode gleich 403 ist
+        assert response.status_code == 403
+        # Überprüfe ob die message aus response gleich 'User does not have corresponding access' ist
+        assert json.loads(response.data)['message'] == 'User does not have corresponding access'
+
     def test_admin_delete_book(self):
         # Logge den Benutzer mit den Daten {username: 'user2', password: 'pass2'}
         self.login('user2', 'pass2')
@@ -93,6 +130,26 @@ class TestTodoAPI(unittest.TestCase):
         assert response.status_code == 200
         # Überprüfe, ob message aus response gleich 'Book deleted' ist
         assert json.loads(response.data)['message'] == 'Book deleted'
+
+    def test_user_delete_book(self):
+        # Logge den Benutzer mit den Daten {username: 'user1', password: 'pass1'}
+        self.login('user1', 'pass1')
+        # Hole alle Bücher und speichere die Antwort in response
+        response = self.client.get('/books')
+        # Überprüfe, ob der Statuscode gleich 200 ist
+        assert response.status_code == 200
+        # Speichere die Daten aus Response in books
+        books = json.loads(response.data)
+        # Überprüfe, ob die books-Liste nicht leer ist
+        assert len(books) > 0
+        # Hole die ID des ersten Elements in der Liste books
+        first_book_id = books[0]['book_id']
+        # Lösche das erste books-Element und speichere die Antwort in response
+        response = self.client.delete(f'/books/{first_book_id}')
+        # Überprüfe, ob der Statuscode gleich 403 ist
+        assert response.status_code == 403
+        # Überprüfe, ob message aus response gleich 'User does not have corresponding access' ist
+        assert json.loads(response.data)['message'] == 'User does not have corresponding access'
 
     def test_get_all_reviews(self):
         # Logge den Benutzer mit den Daten {username: 'user1', password: 'pass1'}
