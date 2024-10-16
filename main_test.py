@@ -37,9 +37,9 @@ class TestTodoAPI(unittest.TestCase):
         # Prüfe ob der Typ der Daten in response list ist
         assert type(json.loads(response.data)) is list
 
-    def test_add_book(self):
-        # Logge den Benutzer mit den Daten {username: 'user1', password: 'pass1'}
-        self.login('user1', 'pass1')
+    def test_admin_add_book(self):
+        # Logge den Benutzer mit den Daten {username: 'user2', password: 'pass2'}
+        self.login('user2', 'pass2')
         # Füge ein neues Buch hinzu und speichere die Antwort in response
         response = self.client.post(
             '/books',
@@ -50,9 +50,9 @@ class TestTodoAPI(unittest.TestCase):
         # Prüfe ob in der response message gleich 'Book added' ist
         assert json.loads(response.data)['message'] == 'Book added'
 
-    def test_update_book(self):
-        # Logge den Benutzer mit den Daten {username: 'user1', password: 'pass1'}
-        self.login('user1', 'pass1')
+    def test_admin_update_book(self):
+        # Logge den Benutzer mit den Daten {username: 'user2', password: 'pass2'}
+        self.login('user2', 'pass2')
         # Hole alle Bücher und speicher die Antwort in response
         response = self.client.get('/books')
         # Prüfe ob der Statuscode gleich 200 ist
@@ -74,9 +74,9 @@ class TestTodoAPI(unittest.TestCase):
         # Überprüfe ob die message aus response gleich 'Book updated' ist
         assert json.loads(response.data)['message'] == 'Book updated'
 
-    def test_delete_book(self):
-        # Logge den Benutzer mit den Daten {username: 'user1', password: 'pass1'}
-        self.login('user1', 'pass1')
+    def test_admin_delete_book(self):
+        # Logge den Benutzer mit den Daten {username: 'user2', password: 'pass2'}
+        self.login('user2', 'pass2')
         # Hole alle Bücher und speichere die Antwort in response
         response = self.client.get('/books')
         # Überprüfe, ob der Statuscode gleich 200 ist

@@ -1,6 +1,5 @@
 """Praxisprojekt: Book Reviewer - Lutz Celina"""
 
-
 from flask_login import UserMixin
 
 
@@ -12,3 +11,6 @@ class User(UserMixin):
         self.email = email
         self.password = password
         self.is_admin = is_admin
+
+    def get_id(self):
+        return self.id
