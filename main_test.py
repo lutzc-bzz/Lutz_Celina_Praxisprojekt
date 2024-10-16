@@ -161,3 +161,29 @@ class TestTodoAPI(unittest.TestCase):
         assert response.status_code == 200
         # Überprüfe ob die message aus response gleich 'Review updated' ist
         assert json.loads(response.data)['message'] == 'Review updated'
+
+    def test_delete_review(self):
+        # Logge den Benutzer mit den Daten {username: 'user1', password: 'pass1'}
+        self.login('user1', 'pass1')
+        # Hole alle Bücher und speichere sie in books_response
+        books_response = self.client.get('/books')
+        # Speichere die Daten aus books_response in books
+        books = json.loads(books_response.data)
+        # Speichere die ID des Buches in book_id
+        book_id = books[0]['book_id']
+        # Hole alle Reviews und speichere die Antwort in response
+        response = self.client.get(f'/books/{book_id}/reviews')
+        # Überprüfe, ob der Statuscode gleich 200 ist
+        assert response.status_code == 200
+        # Speichere die Daten aus Response in reviews
+        reviews = json.loads(response.data)
+        # Überprüfe, ob die reviews-Liste nicht leer ist
+        assert len(reviews) > 0
+        # Hole die ID des ersten Elements in der Liste reviews
+        first_review_id = reviews[0]['review_id']
+        # Lösche das erste reviews-Element und speichere die Antwort in response
+        response = self.client.delete(f'/books/{book_id}/reviews/{first_review_id}')
+        # Überprüfe, ob der Statuscode gleich 200 ist
+        assert response.status_code == 200
+        # Überprüfe, ob message aus response gleich 'Review deleted' ist
+        assert json.loads(response.data)['message'] == 'Review deleted'

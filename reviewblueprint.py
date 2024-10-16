@@ -39,7 +39,7 @@ def add_review(book_id):
 def update_review(review_id, book_id):
     data = request.get_json()
     updated_item = Review(
-        review_id, current_user, book_id, data['rating'], data['comment'], data['review_date']
+        review_id, current_user.id, book_id, data['rating'], data['comment'], data['review_date']
     )
     if review_dao.update_item(updated_item):
         return jsonify({'message': 'Review updated'}), 200
