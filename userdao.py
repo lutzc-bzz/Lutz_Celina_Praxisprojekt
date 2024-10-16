@@ -16,15 +16,15 @@ class UserDao:
     def create_table(self):
         self.cursor.execute("""DROP TABLE IF EXISTS users""")
         self.cursor.execute(
-            """CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT, email TEXT, password TEXT)"""
+            """CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT, email TEXT, password TEXT, is_admin BOOLEAN)"""
         )
         self.conn.commit()
 
     def add_user(self, user):
         hashed_pass = bcrypt.hashpw(user.password.encode("utf-8"), bcrypt.gensalt())
         self.cursor.execute(
-            "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
-            (user.username, user.email, hashed_pass),
+            "INSERT INTO users (username, email, password, is_admin) VALUES (?, ?, ?, ?)",
+            (user.username, user.email, hashed_pass, user.is_admin),
         )
         self.conn.commit()
 
@@ -32,14 +32,14 @@ class UserDao:
         self.cursor.execute("SELECT * FROM users WHERE id = ?", (user_id,))
         row = self.cursor.fetchone()
         if row:
-            return User(row[0], row[1], row[2], row[3])
+            return User(row[0], row[1], row[2], row[3], row[4])
         return None
 
     def get_user_by_username(self, username):
         self.cursor.execute("SELECT * FROM users WHERE username = ?", (username,))
         row = self.cursor.fetchone()
         if row:
-            return User(row[0], row[1], row[2], row[3])
+            return User(row[0], row[1], row[2], row[3], row[4])
         return None
 
     def delete_user(self, user_id):

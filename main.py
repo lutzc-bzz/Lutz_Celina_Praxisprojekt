@@ -38,8 +38,8 @@ def generate_testdata():
 
     # Generate users
     user_dao.create_table()
-    user_dao.add_user(User(1, 'user1', 'user1@example', 'pass1'))
-    user_dao.add_user(User(2, 'user2', 'user2@example', 'pass2'))
+    user_dao.add_user(User(1, 'user1', 'user1@example', 'pass1', False))
+    user_dao.add_user(User(2, 'user2', 'user2@example', 'pass2', True))
 
     # Generate books
     book_dao.create_table()
