@@ -167,7 +167,7 @@ class TestTodoAPI(unittest.TestCase):
         # Füge ein neues Buch hinzu
         self.client.post(
             '/books',
-            json={'title': 'Test Book', 'author': 'Test Author', 'release_date': '11.11.2020', 'average_rating': 1}
+            json={'title': 'Test Book', 'author': 'Test Author', 'release_date': '11.11.2020', 'average_rating': 0}
         )
         # Hole alle Bücher und speichere sie in books_response
         books_response = self.client.get('/books')
@@ -178,12 +178,19 @@ class TestTodoAPI(unittest.TestCase):
         # Füge eine neue Rezension hinzu und speichere die Antwort in response
         response = self.client.post(
             f'/books/{book_id}/reviews',
-            json={'rating': 1, 'comment': 'Test Comment', 'review_date': '11.11.2020'}
+            json={'rating': 5, 'comment': 'Test Comment', 'review_date': '11.11.2020'}
         )
         # Prüfe ob der Statuscode gleich 201 ist
         assert response.status_code == 201
         # Prüfe ob in response message gleich 'Review added' ist
         assert json.loads(response.data)['message'] == 'Review added'
+        # Prüfe, ob average_rating aktualisiert wurde
+
+        # Hole das Buch
+        book = self.client.get(f'/books/{book_id}')
+        # Überprüfe das average_rating
+        book = json.loads(book.data)
+        average_rating = book['average_rating']
 
     def test_update_review(self):
         # Logge den Benutzer mit den Daten {username: 'user1', password: 'pass1'}

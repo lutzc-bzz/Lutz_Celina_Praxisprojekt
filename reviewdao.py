@@ -41,7 +41,13 @@ class ReviewDao:
             return Review(row[0], row[1], row[2], row[3], row[4], row[5])
         return None
 
-    def get_all_items(self, book_id):
+    def get_all_items(self):
+        self.cursor.execute("SELECT * FROM reviews")
+        rows = self.cursor.fetchall()
+        items = [Review(row[0], row[1], row[2], row[3], row[4], row[5]) for row in rows]
+        return items
+
+    def get_all_items_by_book_id(self, book_id):
         self.cursor.execute("SELECT * FROM reviews WHERE book_id = ?", (book_id,))
         rows = self.cursor.fetchall()
         items = [Review(row[0], row[1], row[2], row[3], row[4], row[5]) for row in rows]

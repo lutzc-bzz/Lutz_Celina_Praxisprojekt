@@ -4,7 +4,6 @@
 import sqlite3
 from book import Book
 
-
 class BookDao:
 
     def __init__(self, db_file):
@@ -14,7 +13,8 @@ class BookDao:
     def create_table(self):
         self.cursor.execute("""DROP TABLE IF EXISTS books""")
         self.cursor.execute(
-            """CREATE TABLE IF NOT EXISTS books (book_id INTEGER PRIMARY KEY,
+            """CREATE TABLE IF NOT EXISTS books (
+                book_id INTEGER PRIMARY KEY,
                 title TEXT,
                 author TEXT,
                 release_date TEXT,
@@ -47,6 +47,7 @@ class BookDao:
         return items
 
     def update_item(self, book):
+        # Aktualisiere das Buch
         self.cursor.execute(
             "UPDATE books SET title = ?, author = ?, release_date = ?, average_rating = ? WHERE book_id = ?",
             (book.title, book.author, book.release_date, book.average_rating, book.book_id),

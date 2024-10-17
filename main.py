@@ -45,18 +45,13 @@ def generate_testdata():
     book_dao.create_table()
     book_dao.add_item(Book(1, 'book1', 'Author 1', '11.11.2020', 1))
     book_dao.add_item(Book(2, 'book2', 'Author 2', '12.11.2020', 1))
-    book_dao.add_item(Book(3, 'book3', 'Author 3', '13.11.2020', 1))
-    book_dao.add_item(Book(4, 'book4', 'Author 1', '11.11.2020', 1))
-    book_dao.add_item(Book(5, 'book5', 'Author 2', '11.11.2020', 1))
 
     # Generate reviews
     review_dao.create_table()
     review_dao.add_item(Review(1, 1, 1, 1, 'sehr schlecht', '11.11.2020'))
-    review_dao.add_item(Review(2, 2, 1, 2, 'schlecht', '12.11.2020'))
-    review_dao.add_item(Review(3, 1, 2, 3, 'gut', '13.11.2020'))
-    review_dao.add_item(Review(4, 2, 2, 4, 'sehr gut', '11.11.2020'))
-    review_dao.add_item(Review(5, 1, 3, 5, 'super', '13.11.2020'))
-    review_dao.add_item(Review(6, 2, 3, 1, 'sehr schlecht', '11.11.2020'))
+    review_dao.add_item(Review(2, 2, 1, 1, 'schlecht', '12.11.2020'))
+    review_dao.add_item(Review(3, 1, 2, 1, 'gut', '13.11.2020'))
+    review_dao.add_item(Review(4, 2, 2, 1, 'sehr gut', '11.11.2020'))
 
 
 if __name__ == '__main__':

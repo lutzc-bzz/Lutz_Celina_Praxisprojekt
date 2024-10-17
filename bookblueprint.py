@@ -6,8 +6,10 @@ from flask_login import login_required, current_user
 from userdao import UserDao
 from book import Book
 from bookdao import BookDao
+from reviewdao import ReviewDao
 
 book_blueprint = Blueprint('book_blueprint', __name__)
+review_dao = ReviewDao('book_review.db')
 book_dao = BookDao('book_review.db')
 user_dao = UserDao('book_review.db')
 
@@ -31,7 +33,7 @@ def get_item(book_id):
 @login_required
 def add_book():
     data = request.get_json()
-    new_item = Book(None, data['title'], data['author'], data['release_date'], None)
+    new_item = Book(None, data['title'], data['author'], data['release_date'], 1)
     user = user_dao.get_user_by_id(current_user.id)
     if user.is_admin:
         book_dao.add_item(new_item)
@@ -52,6 +54,28 @@ def update_book(book_id):
             return jsonify({'message': 'Book updated'}), 200
         return jsonify({'message': 'Book not found or not updated'}), 404
     return jsonify({'message': 'User does not have corresponding access'}), 403
+
+@book_blueprint.route('/books/<int:book_id>', methods=['PUT'])
+@login_required
+def update_average_rating(book_id):
+    data = request.get_json()
+    # Berechne durschnittliche Bewertung vom Buch
+    reviews = review_dao.get_all_items_by_book_id(book_id)
+    total_rating = 0
+    count = 0
+    for review in reviews:
+        total_rating += review.rating
+        count += 1
+
+    average_rating = int(total_rating / count)
+
+    # Aktualisiere average_rating vom Buch
+    updated_item = Book(
+        book_id, data['title'], data['author'], data['release_date'], average_rating
+    )
+    if book_dao.update_item(updated_item):
+        return jsonify({'message': 'Book updated'}), 200
+    return jsonify({'message': 'Book not found or not updated'}), 404
 
 
 @book_blueprint.route('/books/<int:book_id>', methods=['DELETE'])
