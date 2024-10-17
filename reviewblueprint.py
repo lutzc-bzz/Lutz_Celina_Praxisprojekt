@@ -13,9 +13,15 @@ review_dao = ReviewDao('book_review.db')
 book_dao = BookDao('book_review.db')
 
 
+@review_blueprint.route('/reviews', methods=['GET'])
+@login_required
+def get_all_reviewss():
+    items = review_dao.get_all_items()
+    return jsonify([item.__dict__ for item in items]), 200
+
 @review_blueprint.route('/books/<int:book_id>/reviews', methods=['GET'])
 @login_required
-def get_all_reviews(book_id):
+def get_all_reviews_by_book_id(book_id):
     items = review_dao.get_all_items_by_book_id(book_id)
     return jsonify([item.__dict__ for item in items]), 200
 
