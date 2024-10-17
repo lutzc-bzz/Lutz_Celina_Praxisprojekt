@@ -5,6 +5,7 @@ import bcrypt
 from flask import Blueprint, request, jsonify
 from flask_login import login_required, login_user, logout_user
 from userdao import UserDao
+from user import User
 
 user_blueprint = Blueprint('user_blueprint', __name__)
 user_dao = UserDao('book_review.db')
@@ -19,6 +20,12 @@ def login():
         return jsonify({'success': True}), 200
     return jsonify({'error': 'Invalid username or password'}), 401
 
+@user_blueprint.route('/register', methods=['POST'])
+def register():
+    data = request.get_json()
+    new_user = User(None, data['username'], data['email'], data['password'], False)
+    user_dao.add_user(new_user)
+    return jsonify({'success': True}), 200
 
 @user_blueprint.route('/logout')
 @login_required
