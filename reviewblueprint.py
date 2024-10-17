@@ -1,5 +1,5 @@
 """Praxisprojekt: Book Reviewer - Lutz Celina"""
-
+import datetime
 
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
@@ -32,7 +32,10 @@ def get_review(review_id, book_id):
 @login_required
 def add_review(book_id):
     data = request.get_json()
-    new_item = Review(None, current_user.id, book_id, data['rating'], data['comment'], data['review_date'])
+    review_date = str(datetime.datetime.now())
+    review_date = review_date.split(' ')[0]
+    review_date = review_date.split('-')[2] + '.' + review_date.split('-')[1] + '.' + review_date.split('-')[0]
+    new_item = Review(None, current_user.id, book_id, data['rating'], data['comment'], review_date)
     review_dao.add_item(new_item)
     # Average_rating vom Buch aktualisieren
     book = book_dao.get_item(book_id)
