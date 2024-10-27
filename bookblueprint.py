@@ -13,6 +13,15 @@ review_dao = ReviewDao('book_review.db')
 book_dao = BookDao('book_review.db')
 user_dao = UserDao('book_review.db')
 
+def calculate_average(list):
+    total = 0
+    count = 0
+    for item in list:
+        total += item.rating
+        count += 1
+
+    return int(total / count)
+
 
 @book_blueprint.route('/books', methods=['GET'])
 def get_all_books():
@@ -61,13 +70,7 @@ def update_average_rating(book_id):
     data = request.get_json()
     # Berechne durschnittliche Bewertung vom Buch
     reviews = review_dao.get_all_items_by_book_id(book_id)
-    total_rating = 0
-    count = 0
-    for review in reviews:
-        total_rating += review.rating
-        count += 1
-
-    average_rating = int(total_rating / count)
+    average_rating = calculate_average(reviews)
 
     # Aktualisiere average_rating vom Buch
     updated_item = Book(
