@@ -32,26 +32,39 @@ app.register_blueprint(reviewblueprint.review_blueprint)
 
 
 def generate_testdata():
-    user_dao = UserDao('book_review.db')
-    book_dao = BookDao('book_review.db')
-    review_dao = ReviewDao('book_review.db')
+    db = 'book_review.db'
+    user_dao = UserDao(db)
+    book_dao = BookDao(db)
+    review_dao = ReviewDao(db)
 
     # Generate users
+    users = [(1, 'user1', 'user1@example', 'pass1', False),
+             (2, 'user2', 'user2@example', 'pass2', True)]
+
     user_dao.create_table()
-    user_dao.add_user(User(1, 'user1', 'user1@example', 'pass1', False))
-    user_dao.add_user(User(2, 'user2', 'user2@example', 'pass2', True))
+
+    for user in users:
+        user_dao.add_user(User(*user))
 
     # Generate books
+    books = [(1, 'book1', 'Author 1', '11.11.2020', 1),
+             (2, 'book2', 'Author 2', '12.11.2020', 1)]
+
     book_dao.create_table()
-    book_dao.add_item(Book(1, 'book1', 'Author 1', '11.11.2020', 1))
-    book_dao.add_item(Book(2, 'book2', 'Author 2', '12.11.2020', 1))
+
+    for book in books:
+        book_dao.add_item(Book(*book))
 
     # Generate reviews
+    reviews = [(1, 1, 1, 1, 'sehr schlecht', '11.11.2020'),
+               (2, 2, 1, 1, 'schlecht', '12.11.2020'),
+               (3, 1, 2, 1, 'gut', '13.11.2020'),
+               (4, 2, 2, 1, 'sehr gut', '11.11.2020')]
+
     review_dao.create_table()
-    review_dao.add_item(Review(1, 1, 1, 1, 'sehr schlecht', '11.11.2020'))
-    review_dao.add_item(Review(2, 2, 1, 1, 'schlecht', '12.11.2020'))
-    review_dao.add_item(Review(3, 1, 2, 1, 'gut', '13.11.2020'))
-    review_dao.add_item(Review(4, 2, 2, 1, 'sehr gut', '11.11.2020'))
+
+    for review in reviews:
+        review_dao.add_item(Review(*review))
 
 
 if __name__ == '__main__':
