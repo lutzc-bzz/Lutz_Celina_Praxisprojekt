@@ -32,3 +32,22 @@ def register():
 def logout():
     logout_user()
     return jsonify({'success': True}), 200
+
+def check_state(string):
+    if string == 'True':
+        return True
+    if string == 'False':
+        return False
+
+def change_user_status(object, state):
+    object.admin = state
+    return object
+
+@user_blueprint.route('/changeadminstatus', methods=['POST'])
+def change_admin_status():
+    data = request.get_json()
+    user = user_dao.get_user_by_username(data['username'])
+    if user:
+        user_dao.update_user(change_user_status(user, check_state(user)))
+        return jsonify({'message': 'User admin status changed'}), 200
+    return jsonify({'error': 'Invalid username'}), 401

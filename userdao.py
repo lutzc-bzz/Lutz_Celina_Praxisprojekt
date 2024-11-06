@@ -49,5 +49,16 @@ class UserDao:
             return True
         return False
 
+    def update_user(self, user):
+        self.cursor.execute(
+            "UPDATE users SET username = ?, email = ?, password = ?, is_admin = ? WHERE id = ?",
+            (user.username, user.email, user.password, user.is_admin, user.id),
+        )
+        if self.cursor.rowcount > 0:
+            self.conn.commit()
+            return True
+        return False
+
+
     def close(self):
         self.conn.close()
