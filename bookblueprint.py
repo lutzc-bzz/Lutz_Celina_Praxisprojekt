@@ -27,6 +27,9 @@ def discount_price(discount):
         return book.price * discount
     return calculate_price
 
+def convert_discount(percent):
+    return percent * 0.01
+
 
 @book_blueprint.route('/books', methods=['GET'])
 def get_all_books():
@@ -74,7 +77,7 @@ def update_book(book_id):
 def discount_book(book_id):
     data = request.get_json()
     book = book_dao.get_item(book_id)
-    discount = discount_price(data['discount'])
+    discount = discount_price(convert_discount(data['discount']))
     book.price = discount(book)
     updated_item = book
     user = user_dao.get_user_by_id(current_user.id)
