@@ -23,7 +23,8 @@ def get_all_reviewss():
 @login_required
 def get_all_reviews_by_book_id(book_id):
     items = review_dao.get_all_items_by_book_id(book_id)
-    return jsonify([item.__dict__ for item in items]), 200
+    sorted_reviews = sorted(items, key=lambda review: review.rating)
+    return jsonify([item.__dict__ for item in sorted_reviews]), 200
 
 @review_blueprint.route('/books/<int:book_id>/reviews/<int:review_id>', methods=['GET'])
 @login_required
