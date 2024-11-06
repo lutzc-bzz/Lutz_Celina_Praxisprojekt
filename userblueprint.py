@@ -38,6 +38,8 @@ def check_state(string):
         return True
     if string == 'False':
         return False
+    else:
+        return None
 
 def change_user_status(object, state):
     object.admin = state
@@ -47,7 +49,9 @@ def change_user_status(object, state):
 def change_admin_status():
     data = request.get_json()
     user = user_dao.get_user_by_username(data['username'])
-    if user:
-        user_dao.update_user(change_user_status(user, check_state(user)))
+    if user and check_state(data['admin']) is not None:
+        user_dao.update_user(change_user_status(user, check_state(data['admin'])))
         return jsonify({'message': 'User admin status changed'}), 200
-    return jsonify({'error': 'Invalid username'}), 401
+    if user is None:
+        return jsonify({'error': 'Invalid username'}), 401
+    return jsonify({'error': 'Invalid admin state'}), 401
