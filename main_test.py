@@ -254,3 +254,24 @@ class TestTodoAPI(unittest.TestCase):
         assert response.status_code == 200
         # Überprüfe, ob message aus response gleich 'Review deleted' ist
         assert json.loads(response.data)['message'] == 'Review deleted'
+
+    def test_book_discount(self):
+        self.login('user2', 'pass2')
+        books_response = self.client.get('/books')
+        books = json.loads(books_response.data)
+        book = books[0]
+        book_id = book['book_id']
+        original_price = book['price']
+        discount = 0.8
+        response = self.client.put(
+            f'/books/{book_id}/discount',
+            json={'discount': 20},
+        )
+        updated_book_response = self.client.get(f'/books/{book_id}')
+        updated_book = json.loads(updated_book_response.data)
+        expected_price = (lambda price, discount: round(price * discount, 2))(original_price, discount)
+        assert response.status_code == 200
+        assert json.loads(response.data)['message'] == 'Book updated'
+        assert updated_book['price'] == expected_price
+
+
