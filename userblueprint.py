@@ -41,17 +41,19 @@ def check_state(string):
     else:
         return None
 
-def change_user_status(object, state):
-    object.admin = state
-    return object
+def change_user_status(user_object, state):
+    user_object.is_admin = state
+    return user_object
 
-@user_blueprint.route('/changeadminstatus', methods=['POST'])
+@user_blueprint.route('/changeadminstatus', methods=['PUT'])
+@login_required
 def change_admin_status():
     data = request.get_json()
     user = user_dao.get_user_by_username(data['username'])
     if user and check_state(data['admin']) is not None:
         user_dao.update_user(change_user_status(user, check_state(data['admin'])))
-        return jsonify({'message': 'User admin status changed'}), 200
+        return jsonify({'message': f'User admin status changed'}), 200
     if user is None:
         return jsonify({'error': 'Invalid username'}), 401
     return jsonify({'error': 'Invalid admin state'}), 401
+
