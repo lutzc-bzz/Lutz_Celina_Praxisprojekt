@@ -13,3 +13,4 @@ class Book:
     author: str
     release_date: str
     average_rating: int
+    price: float

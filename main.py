@@ -51,8 +51,8 @@ def generate_testdata():
         user_dao.add_user(User(*user))
 
     # Generate books
-    books = [(1, 'book1', 'Author 1', '11.11.2020', 1),
-             (2, 'book2', 'Author 2', '12.11.2020', 1)]
+    books = [(1, 'book1', 'Author 1', '11.11.2020', 1, 10.00),
+             (2, 'book2', 'Author 2', '12.11.2020', 1, 10.00)]
 
     for book in books:
         book_dao.add_item(Book(*book))

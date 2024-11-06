@@ -43,7 +43,8 @@ class TestTodoAPI(unittest.TestCase):
         # Füge ein neues Buch hinzu und speichere die Antwort in response
         response = self.client.post(
             '/books',
-            json={'title': 'Test Book', 'author': 'Test Author', 'release_date': '11.11.2020', 'average_rating': 1}
+            json={'title': 'Test Book', 'author': 'Test Author', 'release_date': '11.11.2020', 'average_rating': 1,
+                  'price': 10.00}
         )
         # Prüfe ob der Statuscode gleich 201 ist
         assert response.status_code == 201
@@ -56,7 +57,8 @@ class TestTodoAPI(unittest.TestCase):
         # Füge ein neues Buch hinzu und speichere die Antwort in response
         response = self.client.post(
             '/books',
-            json={'title': 'Test Book', 'author': 'Test Author', 'release_date': '11.11.2020', 'average_rating': 1}
+            json={'title': 'Test Book', 'author': 'Test Author', 'release_date': '11.11.2020', 'average_rating': 1,
+                  'price': 10.00}
         )
         # Prüfe ob der Statuscode gleich 403 ist
         assert response.status_code == 403
@@ -80,7 +82,7 @@ class TestTodoAPI(unittest.TestCase):
         response = self.client.put(
             f'/books/{first_book_id}',
             json={'title': 'Updated Test Book', 'author': 'Updated Test Author', 'release_date': '22.11.2020',
-                  'average_rating': 5},
+                  'average_rating': 5, 'price': 10.00},
         )
         # Prüfe ob der Statuscode gleich 200 ist
         assert response.status_code == 200
@@ -104,7 +106,7 @@ class TestTodoAPI(unittest.TestCase):
         response = self.client.put(
             f'/books/{first_book_id}',
             json={'title': 'Updated Test Book', 'author': 'Updated Test Author', 'release_date': '22.11.2020',
-                  'average_rating': 5},
+                  'average_rating': 5, 'price': 10.00},
         )
         # Prüfe ob der Statuscode gleich 403 ist
         assert response.status_code == 403
@@ -167,7 +169,8 @@ class TestTodoAPI(unittest.TestCase):
         # Füge ein neues Buch hinzu
         self.client.post(
             '/books',
-            json={'title': 'Test Book', 'author': 'Test Author', 'release_date': '11.11.2020', 'average_rating': 0}
+            json={'title': 'Test Book', 'author': 'Test Author', 'release_date': '11.11.2020', 'average_rating': 0,
+                  'price': 10.00}
         )
         # Hole alle Bücher und speichere sie in books_response
         books_response = self.client.get('/books')
@@ -178,7 +181,7 @@ class TestTodoAPI(unittest.TestCase):
         # Füge eine neue Rezension hinzu und speichere die Antwort in response
         response = self.client.post(
             f'/books/{book_id}/reviews',
-            json={'rating': 5, 'comment': 'Test Comment', 'review_date': '11.11.2020'}
+            json={'rating': 5, 'comment': 'Test Comment', 'review_date': '11.11.2020', 'price': 10.00}
         )
         # Prüfe ob der Statuscode gleich 201 ist
         assert response.status_code == 201
@@ -198,7 +201,7 @@ class TestTodoAPI(unittest.TestCase):
         # Füge ein neues Buch hinzu
         self.client.post(
             '/books',
-            json={'title': 'Test Book', 'author': 'Test Author', 'release_date': '11.11.2020', 'average_rating': 1}
+            json={'title': 'Test Book', 'author': 'Test Author', 'release_date': '11.11.2020', 'average_rating': 1, 'price': 10.00}
         )
         # Hole alle Bücher und speichere sie in books_response
         books_response = self.client.get('/books')
@@ -219,7 +222,7 @@ class TestTodoAPI(unittest.TestCase):
         # Aktualisiere die erste Rezension der reviews-Liste mit neuen Daten und speichere die Antwort in response
         response = self.client.put(
             f'/books/{book_id}/reviews/{first_review_id}',
-            json={'rating': 5, 'comment': 'Updated Test Comment', 'review_date': '22.11.2020'}
+            json={'rating': 5, 'comment': 'Updated Test Comment', 'review_date': '22.11.2020', 'price': 10.00}
         )
         # Prüfe ob der Statuscode gleich 200 ist
         assert response.status_code == 200

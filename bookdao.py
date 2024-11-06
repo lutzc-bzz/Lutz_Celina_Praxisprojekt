@@ -18,15 +18,16 @@ class BookDao:
                 title TEXT,
                 author TEXT,
                 release_date TEXT,
-                average_rating INTEGER
+                average_rating INTEGER,
+                price FLOAT
                 )"""
         )
         self.conn.commit()
 
     def add_item(self, book):
         self.cursor.execute(
-            "INSERT INTO books (title, author, release_date, average_rating) VALUES (?, ?, ?, ?)",
-            (book.title, book.author, book.release_date, book.average_rating),
+            "INSERT INTO books (title, author, release_date, average_rating, price) VALUES (?, ?, ?, ?, ?)",
+            (book.title, book.author, book.release_date, book.average_rating, book.price),
         )
         self.conn.commit()
 
@@ -37,20 +38,20 @@ class BookDao:
         )
         row = self.cursor.fetchone()
         if row:
-            return Book(row[0], row[1], row[2], row[3], row[4])
+            return Book(row[0], row[1], row[2], row[3], row[4], row[5])
         return None
 
     def get_all_items(self):
         self.cursor.execute("SELECT * FROM books")
         rows = self.cursor.fetchall()
-        items = [Book(row[0], row[1], row[2], row[3], row[4]) for row in rows]
+        items = [Book(row[0], row[1], row[2], row[3], row[4], row[5]) for row in rows]
         return items
 
     def update_item(self, book):
         # Aktualisiere das Buch
         self.cursor.execute(
-            "UPDATE books SET title = ?, author = ?, release_date = ?, average_rating = ? WHERE book_id = ?",
-            (book.title, book.author, book.release_date, book.average_rating, book.book_id),
+            "UPDATE books SET title = ?, author = ?, release_date = ?, average_rating = ?, price = ? WHERE book_id = ?",
+            (book.title, book.author, book.release_date, book.average_rating, book.price, book.book_id),
         )
         if self.cursor.rowcount > 0:
             self.conn.commit()

@@ -22,6 +22,11 @@ def calculate_average(list):
 
     return int(total / count)
 
+def discount_price(discount):
+    def calculate_price(book):
+        return book.price * discount
+    return calculate_price
+
 
 @book_blueprint.route('/books', methods=['GET'])
 def get_all_books():
@@ -42,7 +47,7 @@ def get_item(book_id):
 @login_required
 def add_book():
     data = request.get_json()
-    new_item = Book(None, data['title'], data['author'], data['release_date'], 1)
+    new_item = Book(None, data['title'], data['author'], data['release_date'], 1, data['price'])
     user = user_dao.get_user_by_id(current_user.id)
     if user.is_admin:
         book_dao.add_item(new_item)
@@ -55,8 +60,23 @@ def add_book():
 def update_book(book_id):
     data = request.get_json()
     updated_item = Book(
-        book_id, data['title'], data['author'], data['release_date'], data['average_rating']
+        book_id, data['title'], data['author'], data['release_date'], data['average_rating'], data['price']
     )
+    user = user_dao.get_user_by_id(current_user.id)
+    if user.is_admin:
+        if book_dao.update_item(updated_item):
+            return jsonify({'message': 'Book updated'}), 200
+        return jsonify({'message': 'Book not found or not updated'}), 404
+    return jsonify({'message': 'User does not have corresponding access'}), 403
+
+@book_blueprint.route('/books/<int:book_id>/discount', methods=['PUT'])
+@login_required
+def discount_book(book_id):
+    data = request.get_json()
+    book = book_dao.get_item(book_id)
+    discount = discount_price(data['discount'])
+    book.price = discount(book)
+    updated_item = book
     user = user_dao.get_user_by_id(current_user.id)
     if user.is_admin:
         if book_dao.update_item(updated_item):
