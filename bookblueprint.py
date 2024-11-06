@@ -24,7 +24,7 @@ def calculate_average(list):
 
 def discount_price(discount):
     def calculate_price(book):
-        return book.price * discount
+        return book.price - book.price * discount
     return calculate_price
 
 def convert_discount(percent):
