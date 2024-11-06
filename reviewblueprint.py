@@ -34,6 +34,15 @@ def get_review(review_id, book_id):
     else:
         return jsonify({'message': 'Review not found'}), 404
 
+def calculate_average_rating(list):
+    total_rating = 0
+    count = 0
+    for item in list:
+        total_rating += item.rating
+        count += 1
+
+    return int(total_rating / count)
+
 @review_blueprint.route('/books/<int:book_id>/reviews', methods=['POST'])
 @login_required
 def add_review(book_id):
@@ -47,13 +56,8 @@ def add_review(book_id):
     book = book_dao.get_item(book_id)
     # Berechne durschnittliche Bewertung vom Buch
     reviews = review_dao.get_all_items_by_book_id(book.book_id)
-    total_rating = 0
-    count = 0
-    for review in reviews:
-        total_rating += review.rating
-        count += 1
-
-    average_rating = int(total_rating / count)
+    average_rating = calculate_average_rating(reviews)
+    # Durchschnittliche Bewertung speichern
     book.average_rating = average_rating
     book_dao.update_item(book)
     return jsonify({'message': 'Review added'}), 201
