@@ -261,6 +261,7 @@ class TestBookReviewAPI(unittest.TestCase):
         books = json.loads(books_response.data)
         book = books[0]
         book_id = book['book_id']
+        expected_price = lambda price, discount: price * discount
         original_price = book['price']
         discount = 0.8
         response = self.client.put(
@@ -269,9 +270,8 @@ class TestBookReviewAPI(unittest.TestCase):
         )
         updated_book_response = self.client.get(f'/books/{book_id}')
         updated_book = json.loads(updated_book_response.data)
-        expected_price = (lambda price, discount: round(price * discount, 2))(original_price, discount)
         assert response.status_code == 200
         assert json.loads(response.data)['message'] == 'Book updated'
-        assert updated_book['price'] == expected_price
+        assert updated_book['price'] == expected_price(original_price,discount)
 
 
