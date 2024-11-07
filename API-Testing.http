@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
     "username": "user1",
-    "password": "pass1"
+    "password": "pass"
 }
 
 ### Logout
@@ -22,7 +22,7 @@ Content-Type: application/json
 
 {
     "username": "user2",
-    "password": "pass2"
+    "password": "pass"
 }
 
 ### Add a new book (login-required)
@@ -45,7 +45,7 @@ Content-Type: application/json
     "title": "Book 1",
     "author": "Author 1",
     "release_date": "22.11.2020",
-    "average_rating": 1
+    "average_rating": 1,
     "price": 10.00
 }
 
@@ -61,7 +61,7 @@ Content-Type: application/json
 
 {
     "username": "user1",
-    "password": "pass1"
+    "password": "pass"
 }
 
 ### Get all reviews for one book

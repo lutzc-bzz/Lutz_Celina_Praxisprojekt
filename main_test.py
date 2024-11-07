@@ -20,7 +20,7 @@ class TestBookReviewAPI(unittest.TestCase):
 
     def test_login(self):
         # Logge den Benutzer ein und speichere die Antwort in response
-        response = self.login('user1', 'pass1')
+        response = self.login('user1', 'pass')
         # Prüfe ob Statuscode gleich 200 ist
         assert response.status_code == 200
         # Prüfe ob in der Response success True ist
@@ -28,8 +28,8 @@ class TestBookReviewAPI(unittest.TestCase):
             assert True
 
     def test_get_all_books(self):
-        # Logge den Benutzer mit den Daten {username: 'user1', password: 'pass1'}
-        self.login('user1', 'pass1')
+        # Logge den Benutzer mit den Daten {username: 'user1', password: 'pass'}
+        self.login('user1', 'pass')
         # Hole alle Bücher und speichere die Antwort in response
         response = self.client.get('/books')
         # Prüfe ob der Statuscode gleich 200 ist
@@ -38,8 +38,8 @@ class TestBookReviewAPI(unittest.TestCase):
         assert type(json.loads(response.data)) is list
 
     def test_admin_add_book(self):
-        # Logge den Benutzer mit den Daten {username: 'user2', password: 'pass2'}
-        self.login('user2', 'pass2')
+        # Logge den Benutzer mit den Daten {username: 'user2', password: 'pass'}
+        self.login('user2', 'pass')
         # Füge ein neues Buch hinzu und speichere die Antwort in response
         response = self.client.post(
             '/books',
@@ -52,8 +52,8 @@ class TestBookReviewAPI(unittest.TestCase):
         assert json.loads(response.data)['message'] == 'Book added'
 
     def test_user_add_book(self):
-        # Logge den Benutzer mit den Daten {username: 'user1', password: 'pass1'}
-        self.login('user1', 'pass1')
+        # Logge den Benutzer mit den Daten {username: 'user1', password: 'pass'}
+        self.login('user1', 'pass')
         # Füge ein neues Buch hinzu und speichere die Antwort in response
         response = self.client.post(
             '/books',
@@ -66,8 +66,8 @@ class TestBookReviewAPI(unittest.TestCase):
         assert json.loads(response.data)['message'] == 'User does not have corresponding access'
 
     def test_admin_update_book(self):
-        # Logge den Benutzer mit den Daten {username: 'user2', password: 'pass2'}
-        self.login('user2', 'pass2')
+        # Logge den Benutzer mit den Daten {username: 'user2', password: 'pass'}
+        self.login('user2', 'pass')
         # Hole alle Bücher und speicher die Antwort in response
         response = self.client.get('/books')
         # Prüfe ob der Statuscode gleich 200 ist
@@ -90,8 +90,8 @@ class TestBookReviewAPI(unittest.TestCase):
         assert json.loads(response.data)['message'] == 'Book updated'
 
     def test_user_update_book(self):
-        # Logge den Benutzer mit den Daten {username: 'user1', password: 'pass1'}
-        self.login('user1', 'pass1')
+        # Logge den Benutzer mit den Daten {username: 'user1', password: 'pass'}
+        self.login('user1', 'pass')
         # Hole alle Bücher und speicher die Antwort in response
         response = self.client.get('/books')
         # Prüfe ob der Statuscode gleich 200 ist
@@ -114,8 +114,8 @@ class TestBookReviewAPI(unittest.TestCase):
         assert json.loads(response.data)['message'] == 'User does not have corresponding access'
 
     def test_admin_delete_book(self):
-        # Logge den Benutzer mit den Daten {username: 'user2', password: 'pass2'}
-        self.login('user2', 'pass2')
+        # Logge den Benutzer mit den Daten {username: 'user2', password: 'pass'}
+        self.login('user2', 'pass')
         # Hole alle Bücher und speichere die Antwort in response
         response = self.client.get('/books')
         # Überprüfe, ob der Statuscode gleich 200 ist
@@ -134,8 +134,8 @@ class TestBookReviewAPI(unittest.TestCase):
         assert json.loads(response.data)['message'] == 'Book deleted'
 
     def test_user_delete_book(self):
-        # Logge den Benutzer mit den Daten {username: 'user1', password: 'pass1'}
-        self.login('user1', 'pass1')
+        # Logge den Benutzer mit den Daten {username: 'user1', password: 'pass'}
+        self.login('user1', 'pass')
         # Hole alle Bücher und speichere die Antwort in response
         response = self.client.get('/books')
         # Überprüfe, ob der Statuscode gleich 200 ist
@@ -154,8 +154,8 @@ class TestBookReviewAPI(unittest.TestCase):
         assert json.loads(response.data)['message'] == 'User does not have corresponding access'
 
     def test_get_all_reviews(self):
-        # Logge den Benutzer mit den Daten {username: 'user1', password: 'pass1'}
-        self.login('user1', 'pass1')
+        # Logge den Benutzer mit den Daten {username: 'user1', password: 'pass'}
+        self.login('user1', 'pass')
         # Speichere die Antwort in response
         response = self.client.get('/books/1/reviews')
         # Überprüfe, ob Statuscode 200 ist
@@ -164,8 +164,8 @@ class TestBookReviewAPI(unittest.TestCase):
         assert type(json.loads(response.data)) is list
 
     def test_add_review(self):
-        # Logge den Benutzer mit den Daten {username: 'user1', password: 'pass1'}
-        self.login('user1', 'pass1')
+        # Logge den Benutzer mit den Daten {username: 'user1', password: 'pass'}
+        self.login('user1', 'pass')
         # Füge ein neues Buch hinzu
         self.client.post(
             '/books',
@@ -196,8 +196,8 @@ class TestBookReviewAPI(unittest.TestCase):
         average_rating = book['average_rating']
 
     def test_update_review(self):
-        # Logge den Benutzer mit den Daten {username: 'user1', password: 'pass1'}
-        self.login('user1', 'pass1')
+        # Logge den Benutzer mit den Daten {username: 'user1', password: 'pass'}
+        self.login('user1', 'pass')
         # Füge ein neues Buch hinzu
         self.client.post(
             '/books',
@@ -230,8 +230,8 @@ class TestBookReviewAPI(unittest.TestCase):
         assert json.loads(response.data)['message'] == 'Review updated'
 
     def test_delete_review(self):
-        # Logge den Benutzer mit den Daten {username: 'user1', password: 'pass1'}
-        self.login('user1', 'pass1')
+        # Logge den Benutzer mit den Daten {username: 'user1', password: 'pass'}
+        self.login('user1', 'pass')
         # Hole alle Bücher und speichere sie in books_response
         books_response = self.client.get('/books')
         # Speichere die Daten aus books_response in books
@@ -256,7 +256,7 @@ class TestBookReviewAPI(unittest.TestCase):
         assert json.loads(response.data)['message'] == 'Review deleted'
 
     def test_book_discount(self):
-        self.login('user2', 'pass2')
+        self.login('user2', 'pass')
         books_response = self.client.get('/books')
         books = json.loads(books_response.data)
         book = books[0]
