@@ -33,7 +33,8 @@ Content-Type: application/json
     "title": "Book 3",
     "author": "Author 3",
     "release_date": "11.11.2020",
-    "average_rating": 1
+    "average_rating": 1,
+    "price": 10.00
 }
 
 ### Update a specific book by ID (change ID and fields accordingly) (login-required)
@@ -45,6 +46,7 @@ Content-Type: application/json
     "author": "Author 1",
     "release_date": "22.11.2020",
     "average_rating": 1
+    "price": 10.00
 }
 
 ### Delete a specific book by ID (change ID accordingly) (login-required)
