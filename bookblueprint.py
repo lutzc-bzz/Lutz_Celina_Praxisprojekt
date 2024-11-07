@@ -39,9 +39,12 @@ def get_all_books():
 
 @book_blueprint.route('/books/<int:book_id>', methods=['GET'])
 def get_item(book_id):
-    item = book_dao.get_item(book_id)
-    if item:
-        return jsonify(item.__dict__), 200
+    book = book_dao.get_item(book_id)
+    reviews = review_dao.get_all_items_by_book_id(book_id)
+    book.average_rating = calculate_average(reviews)
+    book_dao.update_item(book)
+    if book:
+        return jsonify(book.__dict__), 200
     else:
         return jsonify({'message': 'Book not found'}), 404
 
@@ -86,22 +89,6 @@ def discount_book(book_id):
             return jsonify({'message': 'Book updated'}), 200
         return jsonify({'message': 'Book not found or not updated'}), 404
     return jsonify({'message': 'User does not have corresponding access'}), 403
-
-@book_blueprint.route('/books/<int:book_id>', methods=['PUT'])
-@login_required
-def update_average_rating(book_id):
-    data = request.get_json()
-    # Berechne durschnittliche Bewertung vom Buch
-    reviews = review_dao.get_all_items_by_book_id(book_id)
-    average_rating = calculate_average(reviews)
-
-    # Aktualisiere average_rating vom Buch
-    updated_item = Book(
-        book_id, data['title'], data['author'], data['release_date'], average_rating
-    )
-    if book_dao.update_item(updated_item):
-        return jsonify({'message': 'Book updated'}), 200
-    return jsonify({'message': 'Book not found or not updated'}), 404
 
 
 @book_blueprint.route('/books/<int:book_id>', methods=['DELETE'])
