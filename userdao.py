@@ -59,6 +59,13 @@ class UserDao:
             return True
         return False
 
+    def get_all_users(self):
+        self.cursor.execute("SELECT * FROM users")
+        rows = self.cursor.fetchall()
+        items = [User(row[0], row[1], row[2], row[3], row[4]) for row in rows]
+        return items
+
+
 
     def close(self):
         self.conn.close()

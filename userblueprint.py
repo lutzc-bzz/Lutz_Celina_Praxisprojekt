@@ -57,3 +57,7 @@ def change_admin_status():
         return jsonify({'error': 'Invalid username'}), 401
     return jsonify({'error': 'Invalid admin state'}), 401
 
+@user_blueprint.route('/users', methods=['GET'])
+def get_all_username():
+    users = list(user_dao.get_all_users())
+    return jsonify(list(map(lambda user: user.username, users)))
