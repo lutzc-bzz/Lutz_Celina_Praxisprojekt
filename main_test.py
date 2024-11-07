@@ -5,7 +5,7 @@ import json
 from main import app, generate_testdata
 
 
-class TestTodoAPI(unittest.TestCase):
+class TestBookReviewAPI(unittest.TestCase):
 
     def setUp(self):
         self.app = app
