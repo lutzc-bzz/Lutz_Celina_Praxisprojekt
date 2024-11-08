@@ -53,12 +53,9 @@ def add_review(book_id):
     review_date = review_date.split('-')[2] + '.' + review_date.split('-')[1] + '.' + review_date.split('-')[0]
     new_item = Review(None, current_user.id, book_id, data['rating'], data['comment'], review_date)
     review_dao.add_item(new_item)
-    # Average_rating vom Buch aktualisieren
     book = book_dao.get_item(book_id)
-    # Berechne durschnittliche Bewertung vom Buch
     reviews = review_dao.get_all_items_by_book_id(book.book_id)
     average_rating = calculate_average_rating(reviews)
-    # Durchschnittliche Bewertung speichern
     book.average_rating = average_rating
     book_dao.update_item(book)
     return jsonify({'message': 'Review added'}), 201

@@ -1,4 +1,5 @@
 """Praxisprojekt: Book Reviewer - Lutz Celina"""
+from functools import reduce
 
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
@@ -101,3 +102,22 @@ def delete_book(book_id):
         else:
             return jsonify({'message': 'Book not found or not deleted'}), 404
     return jsonify({'message': 'User does not have corresponding access'}), 403
+
+@book_blueprint.route('/books/by/cheapest', methods=['GET'])
+def get_cheapest_books():
+    items = book_dao.get_all_items()
+    filtered_items = list(filter(lambda book: book.price < 30, items))
+    return jsonify([item.__dict__ for item in filtered_items]), 200
+
+@book_blueprint.route('/books/by/sum', methods=['GET'])
+def get_sum_of_books():
+    items = book_dao.get_all_items()
+    reduction = reduce(lambda sum, book: sum + book.price, items, 0)
+    return jsonify(["Sum price of all books:", reduction])
+
+@book_blueprint.route('/books/by/Author', methods=['POST'])
+def get_sum_books_per_author():
+    data = request.get_json()
+    items = book_dao.get_all_items()
+    reduction = reduce(lambda count, book: count + 1, filter(lambda book: book.author == data['author'], items), 0)
+    return jsonify([f"Amount of books written by {data['author']}:", reduction])
