@@ -1,4 +1,5 @@
 """Praxisprojekt: Book Reviewer - Lutz Celina"""
+from random import randint
 
 from flask import Flask
 from flask_login import LoginManager
@@ -44,49 +45,35 @@ def generate_testdata():
     create_tables()
 
     # Generate users
-    users = [(1, 'user1', 'user1@example', 'pass', False),
-             (2, 'user2', 'user2@example', 'pass', True),
-             (3, 'user3', 'user3@example', 'pass', False),
-             (4, 'user4', 'user4@example', 'pass', False),
-             (5, 'user5', 'user5@example', 'pass', False)]
+    users = [(1, 'user1', 'user1@example', 'pass', True),
+              (2, 'user2', 'user2@example', 'pass', False),]
+
+    for c in range(3, 6):
+        users.append((c, f'user{c}', f'user{c}@example', 'pass', randint(0, 1)))
+
 
     for user in users:
         user_dao.add_user(User(*user))
 
     # Generate books
-    books = [(1, 'book1', 'Author 1', '11.11.2020', 1, 10.00),
-             (2, 'book2', 'Author 2', '12.11.2020', 1, 20.00),
-             (3, 'book3', 'Author 3', '12.11.2020', 1, 30.00),
-             (4, 'book4', 'Author 3', '12.11.2020', 1, 30.00),
-             (5, 'book5', 'Author 3', '12.11.2020', 1, 50.00),
-             (6, 'book6', 'Author 2', '12.11.2020', 1, 100.00),
-             (7, 'book7', 'Author 2', '12.11.2020', 1, 10.00)]
+    books = []
+
+    for c in range(1, 8):
+        books.append((c, f'book{c}', f'Author {c}', '11.11.2020', 1, float(randint(0, 200))))
 
     for book in books:
         book_dao.add_item(Book(*book))
 
     # Generate reviews
-    reviews = [(1, 1, 1, 1, 'sehr schlecht', '11.11.2020'),
-               (2, 2, 1, 1, 'sehr schlecht', '12.11.2021'),
-               (3, 1, 2, 3, 'okay', '13.11.2020'),
-               (4, 2, 3, 4, 'gut', '11.11.2021'),
-               (5, 2, 3, 1, 'sehr schlecht', '11.11.2021'),
-               (6, 3, 5, 1, 'sehr schlecht', '11.11.2005'),
-               (7, 3, 4, 5, 'sehr gut', '11.11.2020'),
-               (8, 3, 2, 2, 'schlecht', '11.11.2020'),
-               (9, 2, 1, 1, 'sehr schlecht', '11.11.2020'),
-               (10, 2, 3, 1, 'sehr schlecht', '11.11.2015'),
-               (11, 5, 4, 2, 'schlecht', '11.11.2020'),
-               (12, 5, 1, 5, 'sehr gut', '11.11.2020'),
-               (13, 6, 3, 1, 'sehr schlecht', '11.11.2013'),
-               (14, 7, 2, 5, 'sehr gut', '11.11.2018'),
-               (15, 7, 5, 3, 'okay', '11.11.2022')]
+    reviews = []
+    comments = ['sehr schlecht', 'schlecht', 'okay', 'gut', 'sehr gut']
 
+    for c in range(1, 16):
+        rating = randint(1, 5)
+        reviews.append((c, randint(1, 7), randint(1, 5), rating, comments[rating - 1], '11.11.2020'))
 
     for review in reviews:
         review_dao.add_item(Review(*review))
-
-
 
 
 if __name__ == '__main__':

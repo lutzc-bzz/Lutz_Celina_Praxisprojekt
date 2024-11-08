@@ -38,8 +38,8 @@ class TestBookReviewAPI(unittest.TestCase):
         assert type(json.loads(response.data)) is list
 
     def test_admin_add_book(self):
-        # Logge den Benutzer mit den Daten {username: 'user2', password: 'pass'}
-        self.login('user2', 'pass')
+        # Logge den Benutzer mit den Daten {username: 'user1', password: 'pass'}
+        self.login('user1', 'pass')
         # Füge ein neues Buch hinzu und speichere die Antwort in response
         response = self.client.post(
             '/books',
@@ -53,7 +53,7 @@ class TestBookReviewAPI(unittest.TestCase):
 
     def test_user_add_book(self):
         # Logge den Benutzer mit den Daten {username: 'user1', password: 'pass'}
-        self.login('user1', 'pass')
+        self.login('user2', 'pass')
         # Füge ein neues Buch hinzu und speichere die Antwort in response
         response = self.client.post(
             '/books',
@@ -66,8 +66,8 @@ class TestBookReviewAPI(unittest.TestCase):
         assert json.loads(response.data)['message'] == 'User does not have corresponding access'
 
     def test_admin_update_book(self):
-        # Logge den Benutzer mit den Daten {username: 'user2', password: 'pass'}
-        self.login('user2', 'pass')
+        # Logge den Benutzer mit den Daten {username: 'user1', password: 'pass'}
+        self.login('user1', 'pass')
         # Hole alle Bücher und speicher die Antwort in response
         response = self.client.get('/books')
         # Prüfe ob der Statuscode gleich 200 ist
@@ -91,7 +91,7 @@ class TestBookReviewAPI(unittest.TestCase):
 
     def test_user_update_book(self):
         # Logge den Benutzer mit den Daten {username: 'user1', password: 'pass'}
-        self.login('user1', 'pass')
+        self.login('user2', 'pass')
         # Hole alle Bücher und speicher die Antwort in response
         response = self.client.get('/books')
         # Prüfe ob der Statuscode gleich 200 ist
@@ -114,8 +114,8 @@ class TestBookReviewAPI(unittest.TestCase):
         assert json.loads(response.data)['message'] == 'User does not have corresponding access'
 
     def test_admin_delete_book(self):
-        # Logge den Benutzer mit den Daten {username: 'user2', password: 'pass'}
-        self.login('user2', 'pass')
+        # Logge den Benutzer mit den Daten {username: 'user1', password: 'pass'}
+        self.login('user1', 'pass')
         # Hole alle Bücher und speichere die Antwort in response
         response = self.client.get('/books')
         # Überprüfe, ob der Statuscode gleich 200 ist
@@ -135,7 +135,7 @@ class TestBookReviewAPI(unittest.TestCase):
 
     def test_user_delete_book(self):
         # Logge den Benutzer mit den Daten {username: 'user1', password: 'pass'}
-        self.login('user1', 'pass')
+        self.login('user2', 'pass')
         # Hole alle Bücher und speichere die Antwort in response
         response = self.client.get('/books')
         # Überprüfe, ob der Statuscode gleich 200 ist
@@ -256,7 +256,7 @@ class TestBookReviewAPI(unittest.TestCase):
         assert json.loads(response.data)['message'] == 'Review deleted'
 
     def test_book_discount(self):
-        self.login('user2', 'pass')
+        self.login('user1', 'pass')
         books_response = self.client.get('/books')
         books = json.loads(books_response.data)
         book = books[0]
